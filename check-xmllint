@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -t 1 ]; then
   R=$(tput setaf 1)
@@ -9,6 +9,8 @@ fi
 
 args=""
 files=""
+
+home_dir="~"
 
 INPLACE=0
 FORMAT=0
@@ -24,7 +26,8 @@ do
     --*)
       for w in $(echo $1 | tr "=" " ")
       do
-        args="${args} $w"
+        replaced=${w//$home_dir/$HOME}
+        args="${args} ${replaced}"
       done
       ;;
     -i)
