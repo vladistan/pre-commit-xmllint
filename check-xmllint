@@ -20,8 +20,7 @@ do
   case "$1" in
     --format)
       FORMAT=1
-      args="${args} ${file} $1"
-      file=""
+      args="${args} $1"
       ;;
     --*)
       for w in $(echo $1 | tr "=" " ")
@@ -32,8 +31,6 @@ do
       ;;
     -i)
       INPLACE=1
-      args="${args} ${file}"
-      file=""
       ;;
     -*)
       for w in $(echo $1 | tr "=" " ")
