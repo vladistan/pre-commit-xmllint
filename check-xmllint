@@ -14,10 +14,14 @@ home_dir="~"
 
 INPLACE=0
 FORMAT=0
+IGNORE_EMPTY=0
 
 for OPT in "$@"
 do
   case "$1" in
+    --ignore-empty)
+      IGNORE_EMPTY=1
+      ;;
     --format)
       FORMAT=1
       args="${args} $1"
@@ -54,7 +58,12 @@ for FILE in ${files}; do
       retval=1
   else
     if [ ${FORMAT} -eq 1 ]; then
-      if ! diff $tmpfile $FILE; then
+      if [ ${IGNORE_EMPTY} -eq 1 ]; then
+        diff_result=$(diff -B $tmpfile $FILE)
+      else
+        diff_result=$(diff $tmpfile $FILE)
+      fi
+      if ! $diff_result; then
         if [ $INPLACE -eq 0 ]; then
           echo "XML check for $FILE: ${R}failed${N}"
           retval=2
